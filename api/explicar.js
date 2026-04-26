@@ -7,7 +7,13 @@ module.exports = async (req, res) => {
     const body = typeof req.body === "string"
       ? JSON.parse(req.body || "{}")
       : (req.body || {});
-    const { texto } = body;
+    const {
+      texto,
+      curso = "ESO",
+      asignatura = "General",
+      dificultad = "Intermedio",
+      tipoSalida = "Paso a paso"
+    } = body;
     if (!texto || !texto.trim()) {
       return res.status(400).json({ error: "Falta texto para explicar" });
     }
@@ -40,6 +46,24 @@ module.exports = async (req, res) => {
 
     let ultimoError = "No se pudo consultar Gemini";
 
+    const prompt = [
+      "Eres un profesor que explica de forma clara y didactica.",
+      "Adapta la respuesta a este contexto:",
+      "- Curso: " + curso,
+      "- Asignatura: " + asignatura,
+      "- Dificultad: " + dificultad,
+      "- Formato: " + tipoSalida,
+      "",
+      "Reglas:",
+      "1) Usa espanol claro y ordenado.",
+      "2) Si el formato es paso a paso, numerar pasos.",
+      "3) Si es mini test, incluye 3 preguntas con respuestas al final.",
+      "4) Evita tecnicismos innecesarios para el nivel indicado.",
+      "",
+      "Texto del estudiante:",
+      texto
+    ].join("\n");
+
     for (const modelo of modelosDisponibles) {
       const response = await fetch(
         "https://generativelanguage.googleapis.com/v1beta/models/" + modelo + ":generateContent?key=" + apiKey,
@@ -49,7 +73,7 @@ module.exports = async (req, res) => {
           body: JSON.stringify({
             contents: [{
               parts: [{
-                text: "Explicame esto de forma sencilla como para un nino:\n\n" + texto
+                text: prompt
               }]
             }]
           })

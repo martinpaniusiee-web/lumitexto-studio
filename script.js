@@ -26,11 +26,12 @@ function leerHistorial() {
   }
 }
 
-function guardarEnHistorial(texto, resultado) {
+function guardarEnHistorial(texto, resultado, contexto) {
   const historialActual = leerHistorial();
   const nuevoItem = {
     texto: texto.slice(0, 160),
     resultado: resultado.slice(0, 500),
+    contexto,
     fecha: new Date().toLocaleString("es-ES")
   };
 
@@ -55,7 +56,7 @@ function renderizarHistorial() {
     .map(
       (item) =>
         '<article class="history-item">' +
-        "<p>" + item.fecha + "</p>" +
+        '<p class="meta">' + item.fecha + " · " + (item.contexto || "General") + "</p>" +
         "<pre>" + item.resultado + "</pre>" +
         "</article>"
     )
@@ -93,6 +94,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function explicar() {
   const texto = document.getElementById("inputText").value;
+  const curso = document.getElementById("curso").value;
+  const asignatura = document.getElementById("asignatura").value;
+  const dificultad = document.getElementById("dificultad").value;
+  const tipoSalida = document.getElementById("tipoSalida").value;
   const resultado = document.getElementById("resultado");
   const boton = document.getElementById("explicarBtn");
 
@@ -114,7 +119,13 @@ async function explicar() {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ texto })
+      body: JSON.stringify({
+        texto,
+        curso,
+        asignatura,
+        dificultad,
+        tipoSalida
+      })
     });
     const data = await response.json();
 
@@ -128,7 +139,7 @@ async function explicar() {
     resultado.classList.add("ok");
     const textoResultado = data.resultado || "No hubo respuesta del modelo.";
     resultado.innerText = textoResultado;
-    guardarEnHistorial(texto, textoResultado);
+    guardarEnHistorial(texto, textoResultado, curso + " · " + asignatura);
   } catch (error) {
     resultado.classList.add("error");
     resultado.innerText =

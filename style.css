@@ -162,6 +162,27 @@ body.dark .resultado {
   margin-bottom: 8px;
 }
 
+select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 14px;
+  padding: 10px 12px;
+  background: #ffffff;
+  color: var(--text);
+}
+
+body.dark select {
+  background: #111827;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
 textarea {
   width: 100%;
   min-height: 180px;
@@ -302,6 +323,11 @@ body.dark .secondary-btn:hover {
   font-size: 13px;
 }
 
+.history-item .meta {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
 .history-item pre {
   margin: 6px 0 0;
   white-space: pre-wrap;
@@ -376,5 +402,9 @@ body.dark .steps article {
   .history-head {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .filters {
+    grid-template-columns: 1fr;
   }
 }

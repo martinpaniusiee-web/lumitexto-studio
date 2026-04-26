@@ -43,6 +43,50 @@
     </header>
 
     <section class="card">
+      <div class="filters">
+        <div>
+          <label for="curso" class="label">Curso o nivel</label>
+          <select id="curso">
+            <option value="Primaria">Primaria</option>
+            <option value="ESO" selected>ESO</option>
+            <option value="Bachillerato">Bachillerato</option>
+            <option value="Universidad">Universidad</option>
+            <option value="Formacion Profesional">Formacion Profesional</option>
+          </select>
+        </div>
+        <div>
+          <label for="asignatura" class="label">Asignatura</label>
+          <select id="asignatura">
+            <option value="General" selected>General</option>
+            <option value="Matematicas">Matematicas</option>
+            <option value="Lengua">Lengua</option>
+            <option value="Historia">Historia</option>
+            <option value="Fisica">Fisica</option>
+            <option value="Quimica">Quimica</option>
+            <option value="Biologia">Biologia</option>
+            <option value="Tecnologia">Tecnologia</option>
+            <option value="Ingles">Ingles</option>
+          </select>
+        </div>
+        <div>
+          <label for="dificultad" class="label">Nivel de explicacion</label>
+          <select id="dificultad">
+            <option value="Basico">Basico</option>
+            <option value="Intermedio" selected>Intermedio</option>
+            <option value="Avanzado">Avanzado</option>
+          </select>
+        </div>
+        <div>
+          <label for="tipoSalida" class="label">Formato de salida</label>
+          <select id="tipoSalida">
+            <option value="Resumen corto">Resumen corto</option>
+            <option value="Paso a paso" selected>Paso a paso</option>
+            <option value="Con ejemplo practico">Con ejemplo practico</option>
+            <option value="Mini test de repaso">Mini test de repaso</option>
+          </select>
+        </div>
+      </div>
+
       <label for="inputText" class="label">Texto a explicar</label>
       <textarea id="inputText" placeholder="Pega tu texto aquí..."></textarea>
 
