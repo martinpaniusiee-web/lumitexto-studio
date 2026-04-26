@@ -24,7 +24,6 @@ async function explicar() {
   const texto = document.getElementById("inputText").value;
   const resultado = document.getElementById("resultado");
   const boton = document.getElementById("explicarBtn");
-  const apiKey = "AIzaSyBrr-dAQf3rVQIhycEhaeAnh59KuwepXqI";
 
   resultado.classList.remove("ok", "error");
 
@@ -39,68 +38,28 @@ async function explicar() {
   resultado.innerText = "Pensando...";
 
   try {
-    const modelsRes = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models?key=" + apiKey
-    );
-    const modelsData = await modelsRes.json();
-
-    if (!modelsRes.ok) {
-      const modelsError = modelsData?.error?.message || "No se pudo listar modelos.";
-      resultado.classList.add("error");
-      resultado.innerText =
-        "Error de autenticacion/API key (" + modelsRes.status + "): " + modelsError;
-      return;
-    }
-
-    const modelosDisponibles = (modelsData.models || [])
-      .filter((m) => (m.supportedGenerationMethods || []).includes("generateContent"))
-      .map((m) => (m.name || "").replace("models/", ""));
-
-    if (modelosDisponibles.length === 0) {
-      resultado.classList.add("error");
-      resultado.innerText = "Tu API key no tiene modelos compatibles con generateContent.";
-      return;
-    }
-
-    const modelo = modelosDisponibles[0];
-
-    const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/" +
-        modelo +
-        ":generateContent?key=" +
-        apiKey,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: "Explícame esto de forma sencilla como para un niño:\n\n" + texto
-            }]
-          }]
-        })
-      }
-    );
-
+    const response = await fetch("/api/explicar", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ texto })
+    });
     const data = await response.json();
 
     if (!response.ok) {
-      const apiError = data?.error?.message || "Error desconocido de la API.";
+      const apiError = data?.error || "Error desconocido del servidor.";
       resultado.classList.add("error");
-      resultado.innerText =
-        "Error al generar (" + response.status + ") con " + modelo + ": " + apiError;
+      resultado.innerText = "Error (" + response.status + "): " + apiError;
       return;
     }
 
     resultado.classList.add("ok");
-    resultado.innerText =
-      data.candidates?.[0]?.content?.parts?.[0]?.text || "No hubo respuesta del modelo.";
+    resultado.innerText = data.resultado || "No hubo respuesta del modelo.";
   } catch (error) {
     resultado.classList.add("error");
     resultado.innerText =
-      "Error de red/CORS. Abre con Live Server y revisa consola (F12).";
+      "Error de red. Verifica que el backend este desplegado y funcionando.";
     console.error(error);
   } finally {
     boton.disabled = false;
