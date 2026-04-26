@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LumiTexto Studio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="topbar">
+        <div class="brand" aria-label="Logo LumiTexto Studio">
+          <span class="brand-logo">L</span>
+          <div class="brand-text">
+            <strong>LumiTexto Studio</strong>
+            <small>Explicador inteligente</small>
+          </div>
+        </div>
+        <button id="modoBtn" class="modo-btn" type="button" onclick="toggleModo()">
+          Modo oscuro
+        </button>
+      </div>
+      <p class="badge">Asistente IA para aprender facil</p>
+      <h1>Aprende mas rapido con LumiTexto Studio</h1>
+      <p class="subtitle">
+        Convierte textos complejos en explicaciones simples, visuales y faciles de entender.
+      </p>
+    </header>
+
+    <section class="card">
+      <label for="inputText" class="label">Texto a explicar</label>
+      <textarea id="inputText" placeholder="Pega tu texto aquí..."></textarea>
+
+      <button id="explicarBtn" onclick="explicar()">Explicar con IA</button>
+
+      <div id="resultado" class="resultado" aria-live="polite">
+        Tu explicación aparecerá aquí.
+      </div>
+    </section>
+
+    <section class="how card">
+      <h2>Como funciona</h2>
+      <div class="steps">
+        <article>
+          <h3>1. Pega tu texto</h3>
+          <p>Puede ser un parrafo corto, una noticia o un concepto tecnico.</p>
+        </article>
+        <article>
+          <h3>2. Pulsa explicar</h3>
+          <p>La IA procesa el contenido y lo reescribe en lenguaje sencillo.</p>
+        </article>
+        <article>
+          <h3>3. Aprende rapido</h3>
+          <p>Lee el resultado y vuelve a intentarlo con diferentes textos.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      Consejo: usa textos cortos para respuestas mas rapidas y precisas.
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
