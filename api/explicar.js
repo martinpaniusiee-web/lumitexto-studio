@@ -17,10 +17,30 @@ module.exports = async (req, res) => {
       return res.status(500).json({ error: "Falta GEMINI_API_KEY en el servidor" });
     }
 
-    const modelos = ["gemini-2.0-flash", "gemini-1.5-flash-latest", "gemini-1.5-flash"];
+    const modelosResponse = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models?key=" + apiKey
+    );
+    const modelosData = await modelosResponse.json();
+
+    if (!modelosResponse.ok) {
+      return res.status(modelosResponse.status).json({
+        error: modelosData?.error?.message || "No se pudieron listar modelos de Gemini"
+      });
+    }
+
+    const modelosDisponibles = (modelosData.models || [])
+      .filter((m) => (m.supportedGenerationMethods || []).includes("generateContent"))
+      .map((m) => (m.name || "").replace("models/", ""));
+
+    if (modelosDisponibles.length === 0) {
+      return res.status(502).json({
+        error: "Tu API key no tiene modelos compatibles con generateContent"
+      });
+    }
+
     let ultimoError = "No se pudo consultar Gemini";
 
-    for (const modelo of modelos) {
+    for (const modelo of modelosDisponibles) {
       const response = await fetch(
         "https://generativelanguage.googleapis.com/v1beta/models/" + modelo + ":generateContent?key=" + apiKey,
         {
