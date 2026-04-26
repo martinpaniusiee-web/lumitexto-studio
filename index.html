@@ -46,10 +46,27 @@
       <label for="inputText" class="label">Texto a explicar</label>
       <textarea id="inputText" placeholder="Pega tu texto aquí..."></textarea>
 
-      <button id="explicarBtn" onclick="explicar()">Explicar con IA</button>
+      <div class="actions">
+        <button id="explicarBtn" onclick="explicar()">Explicar con IA</button>
+        <button id="copiarBtn" class="secondary-btn" type="button" onclick="copiarResultado()">
+          Copiar resultado
+        </button>
+      </div>
 
       <div id="resultado" class="resultado" aria-live="polite">
         Tu explicación aparecerá aquí.
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="history-head">
+        <h2>Historial reciente</h2>
+        <button class="secondary-btn" type="button" onclick="limpiarHistorial()">
+          Limpiar
+        </button>
+      </div>
+      <div id="historial" class="historial-vacio">
+        Aun no hay explicaciones guardadas.
       </div>
     </section>
 
